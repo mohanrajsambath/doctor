@@ -1,5 +1,4 @@
 # doctor
-Sample Application list item in Recyclerview.
 In this branch you'll find:
 
 Introduction

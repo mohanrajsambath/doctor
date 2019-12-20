@@ -30,8 +30,7 @@ A sample app consist of 3 screens: Splash screen ,list of doctor and doctor deta
 
 Screenshots
 -----------
-![DoctorListFragment](screenshots/phone_doctors_list "list of doctor")
-![DoctorDetailFragment](screenshots/phone_doctor_detail.png "doctor details")
+
 
 
 Libraries Used

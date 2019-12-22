@@ -31,7 +31,7 @@ import java.lang.Exception
  */
 
 
-class DoctorDataSource constructor(private val apiService: RetrofitInterface) {
+open class DoctorDataSource constructor(private val apiService: RetrofitInterface) {
    suspend fun getDoctor() = safeApiCall(
       call = { getDoctorList() }, errorMessage = "Error Occurred"
    )

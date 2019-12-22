@@ -2,13 +2,23 @@ package com.task.doctor
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.task.doctor.network.DoctorDataSource
+import com.task.doctor.network.Result
 import com.task.doctor.viewmodel.DoctorListViewModel
-import kotlinx.coroutines.GlobalScope
+import junit.framework.TestCase.*
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
+import org.hamcrest.CoreMatchers
+import org.hamcrest.MatcherAssert.assertThat
+import org.junit.Assert
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.mockito.Mockito
+import org.mockito.Mockito.mock
+import org.mockito.MockitoAnnotations
+import java.io.IOException
+import java.lang.Exception
 
 /*
  * Copyright (c) 2019. Created for Coding Challenge and Created by R Sathish Kumar on 20-12-2019.
@@ -41,18 +51,44 @@ class DoctorListViewModelTest {
    val instantExecutorRule = InstantTaskExecutorRule()
    private var doctorJob: Job? = null
 
-   private val dataSource = Mockito.mock(DoctorDataSource::class.java)
 
-   private val viewModel by lazy { DoctorListViewModel(dataSource) }
+   private lateinit var  dataSource : DoctorDataSource
+
+
+
+   @Before
+   @Throws(Exception::class)
+   fun setUp() {
+      // for the "@Mock" annotations
+      MockitoAnnotations.initMocks(this)
+
+      // Make presenter a mock while using mock repository and viewContract created above
+      dataSource = mock(DoctorDataSource::class.java)
+
+   }
 
    @Test
-   fun getDoctorList(){
-      doctorJob = GlobalScope.launch {
-
-
+   fun getDoctorListSuccessTest(){
+      runBlocking {
+         doctorJob = launch {
+          val response  = dataSource.getDoctor()
+            when(response){
+             is Result.Success -> assertEquals(response,"200")
+            }
+         }
       }
    }
 
 
-
+   @Test
+   fun getDoctorListFailTest(){
+      runBlocking {
+         doctorJob = launch {
+            val response  = dataSource.getDoctor()
+            when(response){
+               is Result.Error -> assertEquals(response.data.message,"Error Occurred")
+            }
+         }
+      }
+   }
 }

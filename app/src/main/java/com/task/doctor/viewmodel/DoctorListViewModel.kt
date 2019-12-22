@@ -10,9 +10,7 @@ import com.task.doctor.network.DoctorDataSource
 import com.task.doctor.network.Result
 import com.task.doctor.utils.NetworkConnectivity
 import com.task.doctor.utils.NonNullMediatorLiveData
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 
 /*
  * Copyright (c) 2019. Created for Coding Challenge and Created by R Sathish Kumar on 08-12-2019.
@@ -48,7 +46,7 @@ class DoctorListViewModel(private val doctorDataSource: DoctorDataSource) : View
    private var doctorJob: Job? = null
    private var networkStatus = MutableLiveData<Boolean>()
    val isLoading = ObservableField(false)
-   private  var lastKey: String =""
+   private  var lastKey: String? = null
    val doctorList: MutableLiveData<List<Doctor>> get() = _doctorLiveData
    val error: LiveData<String> get() = _error
 
@@ -98,7 +96,7 @@ class DoctorListViewModel(private val doctorDataSource: DoctorDataSource) : View
          if(lastKey!=null) {
             isLoading.set(true)
             doctorJob = GlobalScope.launch {
-               val response = doctorDataSource.getDoctorWithKey(lastKey)
+               val response = doctorDataSource.getDoctorWithKey(lastKey!!)
                when (response) {
                   is Result.Success -> {
                      isLoading.set(false)

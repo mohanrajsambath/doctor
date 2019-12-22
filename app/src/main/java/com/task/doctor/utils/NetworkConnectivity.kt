@@ -34,7 +34,7 @@ object NetworkConnectivity {
     * Check's the network Connectivity
     * @return  Boolean status of the network connection
     */
-   @SuppressWarnings("deprecation")
+   @SuppressWarnings("deprecated")
    internal fun isNetworkAvailable(context: Context): Boolean {
       val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE)
       return if (connectivityManager is ConnectivityManager) {

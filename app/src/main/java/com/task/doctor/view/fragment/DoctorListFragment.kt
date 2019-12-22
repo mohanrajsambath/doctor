@@ -143,26 +143,14 @@ class DoctorListFragment : Fragment(), View.OnClickListener {
          binding.btnRecentDoctor.id -> {
             vivydoctorClicked = false
             doctor.clear()
-            binding.btnRecentDoctor.setBackgroundColor(
-               getColor(
-                  getFragmentContext, R.color.colorWhite
-               )
-            )
-            binding.btnVivyDoctor.setBackgroundColor(
-               getColor(
-                  getFragmentContext, R.color.colorBlackAlpha60
-               )
-            )
+            binding.btnRecentDoctor.setBackgroundColor(getColor(getFragmentContext, R.color.colorWhite))
+            binding.btnVivyDoctor.setBackgroundColor(getColor(getFragmentContext, R.color.colorBlackAlpha60))
             doctorsViewModel.sortByRecentDoctors()
          }
          binding.btnVivyDoctor.id -> {
             vivydoctorClicked = true
             doctor.clear()
-            binding.btnVivyDoctor.setBackgroundColor(
-               getColor(
-                  getFragmentContext, R.color.colorWhite
-               )
-            )
+            binding.btnVivyDoctor.setBackgroundColor(getColor(getFragmentContext, R.color.colorWhite))
             binding.btnRecentDoctor.setBackgroundColor(
                getColor(
                   getFragmentContext, R.color.colorBlackAlpha60
@@ -182,13 +170,13 @@ class DoctorListFragment : Fragment(), View.OnClickListener {
       try {
          builder.setNegativeButton(
             R.string.str_retry,
-            DialogInterface.OnClickListener { dialog, which ->
+            DialogInterface.OnClickListener { dialog, _ ->
                checkNetworkStatus()
                dialog.dismiss()
             })
          val dialog: AlertDialog? = builder.setPositiveButton(
             R.string.str_cancel,
-            DialogInterface.OnClickListener { dialog1, which ->
+            DialogInterface.OnClickListener { _, _ ->
                getFragmentContext.finish()
             }).create()
          dialog!!.setCanceledOnTouchOutside(false)

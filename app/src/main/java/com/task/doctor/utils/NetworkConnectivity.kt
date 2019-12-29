@@ -42,5 +42,4 @@ object NetworkConnectivity {
          networkInfo?.isConnected ?: false
       } else false
    }
-
 }

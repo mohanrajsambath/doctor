@@ -40,7 +40,7 @@ interface RetrofitInterface {
     fun listDoctors(): Deferred<Response<DoctorResponseModel>>
 
     @GET("android/doctors-{lastkey}.json")
-    fun listDoctorsWithKey(@Path("lastkey") lastkey: String): Deferred<Response<DoctorResponseModel>>
+    fun listDoctorsWithKey(@Path("lastkey") lastKey: String): Deferred<Response<DoctorResponseModel>>
 
 
 

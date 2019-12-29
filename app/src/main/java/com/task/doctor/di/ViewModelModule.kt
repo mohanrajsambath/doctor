@@ -36,6 +36,5 @@ val viewModelModule = module {
    single {
       DoctorDataSource(get())
    }
-
 }
 

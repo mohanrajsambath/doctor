@@ -43,6 +43,4 @@ object NetworkConnectivity {
       } else false
    }
 
-
-
 }

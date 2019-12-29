@@ -111,7 +111,8 @@ class DoctorListViewModel(private val doctorDataSource: DoctorDataSource) : View
                   }
                }
             }
-         }else{
+         }
+         else{
             _error.postValue("Doctor List Ended")
          }
       }catch (Io:Exception){

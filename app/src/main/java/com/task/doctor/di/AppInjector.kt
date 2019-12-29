@@ -36,7 +36,6 @@ import retrofit2.Retrofit
 private val retrofit: Retrofit = RetrofitClient.getClient()
 private val DOCTOR_LIST_API: RetrofitInterface = retrofit.create(RetrofitInterface::class.java)
 
-private lateinit var view: View
 
 fun networkModule() = module {
    single { DOCTOR_LIST_API }

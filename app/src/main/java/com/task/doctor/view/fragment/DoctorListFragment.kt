@@ -3,6 +3,7 @@ package com.task.doctor.view.fragment
 import android.app.Activity
 import android.content.DialogInterface
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -43,12 +44,12 @@ import org.koin.android.viewmodel.ext.android.viewModel
  * File Name : DoctorListFragment.kt
  * ClassName : DoctorListFragment
  * Module Name : app
- * Desc : DoctorListFragment view class communicate with viewmodel and fetch data and display into recyclerview
+ * Desc : DoctorListFragment view class communicate with viewModel and fetch data and display into recyclerview
  * DoctorListFragment is handling view part.
  */
 
 class DoctorListFragment : Fragment(), View.OnClickListener {
-   private var vivydoctorClicked: Boolean = false
+   private var vivyDoctorClicked: Boolean = false
    lateinit var binding: FragmentDoctorListBinding
    private val doctorsViewModel: DoctorListViewModel by viewModel()
    private lateinit var getFragmentContext: Activity
@@ -62,18 +63,25 @@ class DoctorListFragment : Fragment(), View.OnClickListener {
    }
 
    override fun onCreateView(
-      inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
-   ): View? {
-      binding = DataBindingUtil.inflate(inflater, R.layout.fragment_doctor_list, container, false)
-      binding.viewModel = doctorsViewModel
-      binding.executePendingBindings()
+      inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+      if(!::binding.isInitialized) {
+         binding =
+            DataBindingUtil.inflate(inflater, R.layout.fragment_doctor_list, container, false)
+         context ?: return binding.root
 
-      linearLayoutManager = LinearLayoutManager(getFragmentContext, LinearLayoutManager.VERTICAL, false)
-      binding.rcyVwDoctorList.layoutManager = linearLayoutManager
-      doctorRecyclerViewAdapter = DoctorRecyclerViewAdapter(doctor)
-      binding.rcyVwDoctorList.adapter = doctorRecyclerViewAdapter
-      addScrollListener()
-      setOnClickListener()
+         binding.viewModel = doctorsViewModel
+         binding.executePendingBindings()
+
+         linearLayoutManager =          LinearLayoutManager(getFragmentContext, LinearLayoutManager.VERTICAL, false)
+         binding.rcyVwDoctorList.layoutManager = linearLayoutManager
+         doctorRecyclerViewAdapter = DoctorRecyclerViewAdapter(doctor)
+         binding.rcyVwDoctorList.adapter = doctorRecyclerViewAdapter
+         checkNetworkStatus()
+         updatingDoctorList()
+         addScrollListener()
+         errorStatus()
+
+      }
       return binding.root
    }
 
@@ -87,9 +95,7 @@ class DoctorListFragment : Fragment(), View.OnClickListener {
 
    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
       super.onViewCreated(view, savedInstanceState)
-      checkNetworkStatus()
-      errorStatus()
-      updatingDoctorList()
+      setOnClickListener()
    }
 
 
@@ -107,7 +113,7 @@ class DoctorListFragment : Fragment(), View.OnClickListener {
    */
    private fun errorStatus() {
       doctorsViewModel.error.observe(this, Observer {
-         it?.let { Toast.makeText(getFragmentContext, it, Toast.LENGTH_SHORT).show() }
+            Toast.makeText(getFragmentContext, it, Toast.LENGTH_SHORT).show()
       })
    }
 
@@ -129,35 +135,51 @@ class DoctorListFragment : Fragment(), View.OnClickListener {
    private fun addScrollListener() {
       binding.rcyVwDoctorList.addOnScrollListener(object : infiniteScrollListener() {
          override fun onLoadMore() {
-            doctorsViewModel.loadDoctorListWithKey(vivydoctorClicked)
+            doctorsViewModel.loadDoctorListWithKey(vivyDoctorClicked)
          }
       })
    }
 
    /**
     * Onclick is trigger when user clicked on particular button
-    * It will communicate with viewmodel and sorted the result and updated into list.
+    * It will communicate with viewModel and sorted the result and updated into list.
     */
    override fun onClick(v: View?) {
       when (v?.id) {
-         binding.btnRecentDoctor.id -> {
-            vivydoctorClicked = false
-            doctor.clear()
-            binding.btnRecentDoctor.setBackgroundColor(getColor(getFragmentContext, R.color.colorWhite))
-            binding.btnVivyDoctor.setBackgroundColor(getColor(getFragmentContext, R.color.colorBlackAlpha60))
-            doctorsViewModel.sortByRecentDoctors()
-         }
-         binding.btnVivyDoctor.id -> {
-            vivydoctorClicked = true
-            doctor.clear()
-            binding.btnVivyDoctor.setBackgroundColor(getColor(getFragmentContext, R.color.colorWhite))
-            binding.btnRecentDoctor.setBackgroundColor(
-               getColor(
-                  getFragmentContext, R.color.colorBlackAlpha60
-               )
-            )
-            doctorsViewModel.sortByVivyDoctors()
-         }
+         binding.btnRecentDoctor.id -> loadRecentDoctor()
+         binding.btnVivyDoctor.id -> loadVivyDoctor()
+      }
+   }
+
+   private fun loadVivyDoctor() {
+      vivyDoctorClicked = true
+      doctor.clear()
+      binding.btnVivyDoctor.setBackgroundColor(getColor(getFragmentContext, R.color.colorWhite))
+      binding.btnRecentDoctor.setBackgroundColor(
+         getColor(getFragmentContext, R.color.colorBlackAlpha60
+         )
+      )
+      doctorsViewModel.sortByVivyDoctors()
+   }
+
+   private fun loadRecentDoctor() {
+      vivyDoctorClicked = false
+      doctor.clear()
+      binding.btnRecentDoctor.setBackgroundColor(getColor(getFragmentContext, R.color.colorWhite))
+      binding.btnVivyDoctor.setBackgroundColor(getColor(getFragmentContext, R.color.colorBlackAlpha60))
+      doctorsViewModel.sortByRecentDoctors()
+   }
+
+   override fun onResume() {
+      super.onResume()
+      checkLastStateUserClicked()
+   }
+
+   private fun checkLastStateUserClicked() {
+      if (vivyDoctorClicked){
+         loadVivyDoctor()
+      }else{
+         loadRecentDoctor()
       }
    }
 

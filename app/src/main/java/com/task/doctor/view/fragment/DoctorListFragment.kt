@@ -54,8 +54,7 @@ class DoctorListFragment : Fragment(), View.OnClickListener {
    private val doctorsViewModel: DoctorListViewModel by viewModel()
    private lateinit var getFragmentContext: Activity
    private var doctor = mutableListOf<Doctor>()
-   private lateinit var doctorRecyclerViewAdapter: DoctorRecyclerViewAdapter
-   private lateinit var linearLayoutManager: LinearLayoutManager
+   private  var doctorRecyclerViewAdapter: DoctorRecyclerViewAdapter = DoctorRecyclerViewAdapter(doctor)
 
    override fun onCreate(savedInstanceState: Bundle?) {
       super.onCreate(savedInstanceState)
@@ -72,9 +71,6 @@ class DoctorListFragment : Fragment(), View.OnClickListener {
          binding.viewModel = doctorsViewModel
          binding.executePendingBindings()
 
-         linearLayoutManager =          LinearLayoutManager(getFragmentContext, LinearLayoutManager.VERTICAL, false)
-         binding.rcyVwDoctorList.layoutManager = linearLayoutManager
-         doctorRecyclerViewAdapter = DoctorRecyclerViewAdapter(doctor)
          binding.rcyVwDoctorList.adapter = doctorRecyclerViewAdapter
          checkNetworkStatus()
          updatingDoctorList()

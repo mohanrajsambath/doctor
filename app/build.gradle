@@ -87,7 +87,7 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
 
 
-    /* Retrofit using RxJava2, OkHttp logging interceptor, GSON */
+    /* Retrofit using  OkHttp logging interceptor, GSON */
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
     implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
     implementation "com.squareup.retrofit2:converter-jackson:$retrofit_version"

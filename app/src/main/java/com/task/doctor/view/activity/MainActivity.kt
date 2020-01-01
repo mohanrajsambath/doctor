@@ -2,6 +2,7 @@ package com.task.doctor.view.activity
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import com.task.doctor.R
 

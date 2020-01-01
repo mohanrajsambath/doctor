@@ -42,13 +42,6 @@ import org.koin.android.viewmodel.ext.android.viewModel
  */
 
 class SplashFragment : Fragment() {
-   private lateinit var getFragmentContext: Activity
-
-   override fun onCreate(savedInstanceState: Bundle?) {
-      super.onCreate(savedInstanceState)
-      getFragmentContext = this.requireActivity()
-
-   }
 
    override fun onCreateView(
       inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?

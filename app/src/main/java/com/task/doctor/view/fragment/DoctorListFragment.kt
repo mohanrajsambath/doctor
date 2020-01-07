@@ -49,6 +49,7 @@ import org.koin.android.viewmodel.ext.android.viewModel
  */
 
 class DoctorListFragment : Fragment(), View.OnClickListener {
+
    private var vivyDoctorClicked: Boolean = false
    lateinit var binding: FragmentDoctorListBinding
    private val doctorsViewModel: DoctorListViewModel by viewModel()
@@ -66,12 +67,15 @@ class DoctorListFragment : Fragment(), View.OnClickListener {
       if(!::binding.isInitialized) {
          binding =
             DataBindingUtil.inflate(inflater, R.layout.fragment_doctor_list, container, false)
-         context ?: return binding.root
+
 
          binding.viewModel = doctorsViewModel
          binding.executePendingBindings()
 
-         binding.rcyVwDoctorList.adapter = doctorRecyclerViewAdapter
+         binding.let {
+            it.adapter = doctorRecyclerViewAdapter
+         }
+
          checkNetworkStatus()
          updatingDoctorList()
          addScrollListener()

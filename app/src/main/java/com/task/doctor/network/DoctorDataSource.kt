@@ -36,7 +36,7 @@ open class DoctorDataSource constructor(private val apiService: RetrofitInterfac
       call = { getDoctorList() }, errorMessage = "Error Occurred"
    )
 
-   private suspend fun getDoctorList(): Result<DoctorResponseModel> {
+      private suspend fun getDoctorList(): Result<DoctorResponseModel> {
          val response = apiService.listDoctors().await()
          if (response.isSuccessful) return Result.Success(response.body()!!)
          return Result.Error(IOException("Error occurred during fetching doctor list!"))

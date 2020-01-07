@@ -78,7 +78,7 @@
             app:layout_constraintEnd_toEndOf="@id/gL_right_margin"
             app:layout_constraintStart_toEndOf="@+id/txtView_name"
             app:layout_constraintTop_toBottomOf="@id/gl_centre"
-            tools:text="hellooooooooooo" />
+             />
 
 
         <TextView
@@ -111,7 +111,7 @@
             app:layout_constraintEnd_toEndOf="@id/gL_right_margin"
             app:layout_constraintStart_toEndOf="@+id/txtView_Address"
             app:layout_constraintTop_toBottomOf="@id/txtView_doctor_name"
-            tools:text="Welcome to berlin and and Simmenstdamn" />
+             />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -40,3 +40,4 @@ private val DOCTOR_LIST_API: RetrofitInterface = retrofit.create(RetrofitInterfa
 fun networkModule() = module {
    single { DOCTOR_LIST_API }
 }
+

@@ -33,7 +33,8 @@ import com.task.doctor.R
 @BindingAdapter("image")
 fun setAvatarThumbnail(view: ImageView, imageURL: String?) {
    Picasso.get()
-      .load(imageURL)
+         .load(imageURL)
       .placeholder(R.drawable.ic_png_profile)
       .into(view)
 }
+

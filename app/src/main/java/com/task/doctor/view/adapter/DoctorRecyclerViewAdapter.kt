@@ -41,8 +41,7 @@ import com.task.doctor.view.fragment.DoctorListFragmentDirections
 
 class DoctorRecyclerViewAdapter(private var items: MutableList<Doctor>) :
    ListAdapter<Doctor, DoctorRecyclerViewAdapter.ViewHolder>(DoctorItemDiffCallback()) {
-   override fun onCreateViewHolder(
-      parent: ViewGroup, viewType: Int
+   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int
    ): DoctorRecyclerViewAdapter.ViewHolder {
       val binding: ItemDoctorDetailsBinding = DataBindingUtil.inflate(
          LayoutInflater.from(parent.context), R.layout.item_doctor_details, parent, false

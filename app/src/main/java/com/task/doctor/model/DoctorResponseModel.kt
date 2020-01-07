@@ -1,7 +1,5 @@
 package com.task.doctor.model
-import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
-import kotlinx.android.parcel.Parcelize
 
 /*
  * Copyright (c) 2019. Created for Coding Challenge and Created by R Sathish Kumar on 11-12-2019.
@@ -70,6 +68,3 @@ data class Doctor(
     @SerializedName("website")
     val website: String? = "" // http://www.vivy-doc.de/
 )
-
-@Parcelize
-data class DoctorDetail(val name: String,val address: String): Parcelable

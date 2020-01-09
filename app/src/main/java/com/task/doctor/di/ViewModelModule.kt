@@ -31,8 +31,9 @@ import org.koin.dsl.module
  */
 
 val viewModelModule = module {
-   viewModel{ DoctorListViewModel(get())}
-
+    viewModel {
+       DoctorListViewModel(get ())
+    }
    single {
       DoctorDataSource(get())
    }

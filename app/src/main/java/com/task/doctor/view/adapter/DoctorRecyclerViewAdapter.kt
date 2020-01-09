@@ -5,8 +5,6 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.NavDirections
 import androidx.navigation.findNavController
-import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.task.doctor.R
 import com.task.doctor.databinding.ItemDoctorDetailsBinding
@@ -35,32 +33,25 @@ import com.task.doctor.view.fragment.DoctorListFragmentDirections
  * File Name : ListAdapter.kt
  * ClassName : ListAdapter
  * Module Name : app
- * Desc : DoctorRecyclerViewAdapter adapter class for the doctor list recycler view
- * in the DoctorListActivity
+ * Desc : DoctorRecyclerViewAdapter adapter class for the bind the value into
+ * recyclerView show the value in list
  */
 
 class DoctorRecyclerViewAdapter(private var items: MutableList<Doctor>) :
-   ListAdapter<Doctor, DoctorRecyclerViewAdapter.ViewHolder>(DoctorItemDiffCallback()) {
+   RecyclerView.Adapter<DoctorRecyclerViewAdapter.ViewHolder>() {
    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int
-   ): DoctorRecyclerViewAdapter.ViewHolder {
+   ): ViewHolder {
       val binding: ItemDoctorDetailsBinding = DataBindingUtil.inflate(
          LayoutInflater.from(parent.context), R.layout.item_doctor_details, parent, false
       )
       return ViewHolder(binding)
    }
 
-   fun addItems(items: List<Doctor>) {
-      this.items.let {
-         it.addAll(it.size, items)
-      }
-
-   }
-
    override fun getItemCount(): Int {
       return items.size
    }
 
-   override fun onBindViewHolder(holder: DoctorRecyclerViewAdapter.ViewHolder, position: Int) {
+   override fun onBindViewHolder(holder: ViewHolder, position: Int) {
       holder.bind(items[position])
    }
 
@@ -83,16 +74,6 @@ class DoctorRecyclerViewAdapter(private var items: MutableList<Doctor>) :
 
       private fun sendData(name: String, address: String,imageUrl:String): NavDirections {
          return DoctorListFragmentDirections.actionDetail(name, address,imageUrl)
-      }
-   }
-
-   class DoctorItemDiffCallback : DiffUtil.ItemCallback<Doctor>() {
-      override fun areItemsTheSame(oldItem: Doctor, newItem: Doctor): Boolean {
-         return oldItem == newItem
-      }
-
-      override fun areContentsTheSame(oldItem: Doctor, newItem: Doctor): Boolean {
-         return oldItem == newItem
       }
    }
 }

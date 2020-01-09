@@ -7,7 +7,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.task.doctor.model.Doctor
 import com.task.doctor.network.DoctorDataSource
-import com.task.doctor.network.Result
 import com.task.doctor.utils.NetworkConnectivity
 import com.task.doctor.utils.NonNullMediatorLiveData
 import kotlinx.coroutines.*
@@ -69,14 +68,14 @@ class DoctorListViewModel(private val doctorDataSource: DoctorDataSource) : View
          doctorJob = GlobalScope.launch {
             val response = doctorDataSource.getDoctor()
             when (response) {
-               is Result.Success -> {
+               is com.task.doctor.network.Result.Success -> {
                   isLoading.set(false)
                   lastKey = response.data.lastKey
                    sortingDoctorList.addAll(response.data.doctors)
                  val sortedList = sortingDoctorList.sortedByDescending { it.reviewCount }
                   _doctorLiveData.postValue(sortedList)
                }
-               is Result.Error -> {
+               is com.task.doctor.network.Result.Error -> {
                   isLoading.set(false)
                   _error.postValue(response.data.message)
                }
@@ -98,14 +97,14 @@ class DoctorListViewModel(private val doctorDataSource: DoctorDataSource) : View
             doctorJob = GlobalScope.launch {
                val response = doctorDataSource.getDoctorWithKey(lastKey!!)
                when (response) {
-                  is Result.Success -> {
+                  is com.task.doctor.network.Result.Success -> {
                      isLoading.set(false)
                      lastKey = response.data.lastKey
                      sortingDoctorList.addAll(response.data.doctors)
                     val sortedList = getSortedList(userVivyDoctorClicked)
                      _doctorLiveData.postValue(sortedList)
                   }
-                  is Result.Error -> {
+                  is com.task.doctor.network.Result.Error -> {
                      isLoading.set(false)
                      _error.postValue(response.data.message)
                   }

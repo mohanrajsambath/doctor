@@ -1,8 +1,7 @@
-package com.task.doctor.utils
+package com.task.data.common
 
 import android.content.Context
 import android.net.ConnectivityManager
-import android.net.NetworkInfo
 
 /*
  * Copyright (c) 2019. Created for Coding Challenge and Created by R Sathish Kumar on 05-12-2019.
@@ -20,26 +19,25 @@ import android.net.NetworkInfo
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
- * Project Name : doctor
+ * Project Name : Doctor
  * Created by : R Sathish Kumar - Android Application Developer
- * Created on :05-12-2019
- * File Name : NetworkConnectivity.kt
- * ClassName : NetworkConnectivityDefaultOnlineChecker
+ * Created on : 05-12-2019
+ * File Name : ConnectivityImp.kt
+ * ClassName : ConnectivityImp
  * Module Name : app
- * Desc : Check's the network Connectivity
+ * Desc : 
  */
-object NetworkConnectivity {
 
-   /**
-    * Check's the network Connectivity
-    * @return  Boolean status of the network connection
-    */
-   @SuppressWarnings("deprecated")
-   internal fun isNetworkAvailable(context: Context): Boolean {
-      val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE)
-      return if (connectivityManager is ConnectivityManager) {
-         val networkInfo: NetworkInfo? = connectivityManager.activeNetworkInfo
-         networkInfo?.isConnected ?: false
-      } else false
-   }
+/**
+ * Check's the network Connectivity
+ * @return  Boolean status of the network connection
+ */
+@Suppress("DEPRECATION")
+class ConnectivityImpl(private val context: Context) :Connectivity{
+    override fun isNetworkAvailable(): Boolean {
+        val connectivityManager =
+            context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val info = connectivityManager.activeNetworkInfo
+        return info != null && info.isConnected
+    }
 }

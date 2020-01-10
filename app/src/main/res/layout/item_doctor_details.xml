@@ -13,7 +13,7 @@
 
         <variable
             name="itemDetails"
-            type="com.task.doctor.model.Doctor" />
+            type="com.task.doctor.domain.model.DoctorModel" />
     </data>
 
     <androidx.cardview.widget.CardView

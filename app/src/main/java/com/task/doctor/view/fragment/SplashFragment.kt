@@ -54,7 +54,7 @@ class SplashFragment : Fragment() {
          context?.let {
             findNavController().navigate(R.id.action_splashFragment_to_doctorListFragment)
          }
-      }, 2500)
+      }, 2000)
    }
 
 }

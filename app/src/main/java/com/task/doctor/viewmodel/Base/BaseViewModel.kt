@@ -1,9 +1,11 @@
-package com.task.doctor.utils
+package com.task.doctor.viewmodel.Base
 
-import androidx.lifecycle.MediatorLiveData
+import androidx.databinding.ObservableField
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 
 /*
- * Copyright (c) 2019. Created for Coding Challenge and Created by R Sathish Kumar on 16-12-2019.
+ * Copyright (c) 2019. Created for Coding Challenge and Created by R Sathish Kumar on 10-01-2020.
  * All Rights Reserved,Company Confidential.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -20,10 +22,16 @@ import androidx.lifecycle.MediatorLiveData
  *
  * Project Name : doctor
  * Created by : R Sathish Kumar - Android Application Developer
- * Created on :16-12-2019 
- * File Name : NonNullMediatorLiveData.kt
- * ClassName : NonNullMediatorLiveData
+ * Created on :10-01-2020 
+ * File Name : BaseViewModel.kt
+ * ClassName : BaseViewModel
  * Module Name : app
  * Desc : 
  */
-class NonNullMediatorLiveData<T>: MediatorLiveData<T> ()
+
+abstract  class BaseViewModel: ViewModel() {
+
+   val isLoading = ObservableField(true)
+   val error: MutableLiveData<String>  = MutableLiveData()
+
+}

@@ -1,10 +1,5 @@
-package com.task.doctor
+package com.task.doctor.domain.model
 
-import android.app.Application
-import com.task.doctor.di.doctorModule
-import org.koin.android.ext.koin.androidContext
-import org.koin.android.ext.koin.androidLogger
-import org.koin.core.context.startKoin
 
 /*
  * Copyright (c) 2019. Created for Coding Challenge and Created by R Sathish Kumar on 12-12-2019.
@@ -25,24 +20,14 @@ import org.koin.core.context.startKoin
  * Project Name : doctor
  * Created by : R Sathish Kumar - Android Application Developer
  * Created on :12-12-2019 
- * File Name : DoctorApplication.kt
- * ClassName : DoctorApplication
+ * File Name : Result.kt
+ * ClassName : Result
  * Module Name : app
- * Desc : Application level module which  provides Koin  with the context
+ * Desc : Result handle Success and Fail response
  */
-
-class DoctorApplication :Application() {
-   override fun onCreate() {
-      super.onCreate()
-      configureDi()
-   }
-
-   private fun configureDi() {
-      startKoin {
-         androidLogger()
-         androidContext(this@DoctorApplication)
-         modules(listOf(doctorModule))
-
-      }
-   }
+sealed  class Result<out T:Any> {
+   data class Success<out T:Any>(val data:T):
+      Result<T>()
+   data class Error(val data:String):
+      Result<Nothing>()
 }

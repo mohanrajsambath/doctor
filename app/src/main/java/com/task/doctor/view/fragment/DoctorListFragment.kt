@@ -1,23 +1,21 @@
 package com.task.doctor.view.fragment
 
 import android.app.Activity
-import android.content.DialogInterface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat.getColor
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.task.doctor.R
 import com.task.doctor.databinding.FragmentDoctorListBinding
-import com.task.doctor.model.Doctor
+import com.task.doctor.domain.model.DoctorModel
 import com.task.doctor.utils.recycler.infiniteScrollListener
 import com.task.doctor.view.adapter.DoctorRecyclerViewAdapter
-import com.task.doctor.viewmodel.DoctorListViewModel
+import com.task.doctor.viewmodel.DoctorViewModel
 import org.koin.android.viewmodel.ext.android.viewModel
 
 /*
@@ -50,9 +48,9 @@ class DoctorListFragment : Fragment(), View.OnClickListener {
 
    private var vivyDoctorClicked: Boolean = false
    lateinit var binding: FragmentDoctorListBinding
-   private val doctorsViewModel: DoctorListViewModel by viewModel()
+   private val doctorsViewModel: DoctorViewModel by viewModel()
    private lateinit var getFragmentContext: Activity
-   private var doctor = mutableListOf<Doctor>()
+   private var doctor = mutableListOf<DoctorModel>()
    private  var doctorRecyclerViewAdapter: DoctorRecyclerViewAdapter = DoctorRecyclerViewAdapter(doctor)
 
    override fun onCreate(savedInstanceState: Bundle?) {
@@ -74,17 +72,33 @@ class DoctorListFragment : Fragment(), View.OnClickListener {
             it.adapter = doctorRecyclerViewAdapter
          }
 
-         checkNetworkStatus()
-         updatingDoctorList()
+         loadData()
+         setUpViewModelObserver()
          addScrollListener()
-         errorStatus()
 
       }
       return binding.root
    }
 
+   private fun setUpViewModelObserver() {
+      //adds the new set of results to the adapter list
+      doctorsViewModel.doctorList.observe(this, Observer<List<DoctorModel>> {
+         this.doctor.addAll(it)
+         doctorRecyclerViewAdapter.notifyDataSetChanged()
+      })
+
+      /**
+       *  displaying error status from viewModel communicate via Observer
+       */
+      doctorsViewModel.error.observe(this, Observer {
+         Toast.makeText(getFragmentContext, it, Toast.LENGTH_SHORT).show()
+      })
+   }
+
+   private fun loadData()  = doctorsViewModel.loadData()
+
    /**
-    *  OnclickListenter trigger when user clicked the button
+    *  OnclickListener trigger when user clicked the button
     */
    private fun setOnClickListener() {
       binding.btnVivyDoctor.setOnClickListener(this)
@@ -96,36 +110,6 @@ class DoctorListFragment : Fragment(), View.OnClickListener {
       setOnClickListener()
    }
 
-
-   private fun updatingDoctorList() {
-      //adds the new set of results to the adapter list
-      doctorsViewModel.doctorList.observe(this, Observer<List<Doctor>> {
-         this.doctor.addAll(it)
-         doctorRecyclerViewAdapter.notifyDataSetChanged()
-      })
-   }
-
-   /*
-   * displaying error status from viewmodel communicate via Observer
-   * if the loading fails on load more
-   */
-   private fun errorStatus() {
-      doctorsViewModel.error.observe(this, Observer {
-            Toast.makeText(getFragmentContext, it, Toast.LENGTH_SHORT).show()
-      })
-   }
-
-   /**
-    * Check's the network Connectivity
-    */
-   private fun checkNetworkStatus() {
-      doctorsViewModel.checkNetworkConnection(getFragmentContext).observe(this, Observer {
-         when (it) {
-            it -> if (it != null && it == true) doctorsViewModel.loadDoctorList() else checkNetworkConnectivity()
-         }
-      })
-   }
-
    /**
     * InfiniteScrollListener onLoad more method is triggered when end of the list
     * is reached
@@ -133,7 +117,7 @@ class DoctorListFragment : Fragment(), View.OnClickListener {
    private fun addScrollListener() {
       binding.rcyVwDoctorList.addOnScrollListener(object : infiniteScrollListener() {
          override fun onLoadMore() {
-            doctorsViewModel.loadDoctorListWithKey(vivyDoctorClicked)
+            doctorsViewModel.loadMoreData(vivyDoctorClicked)
          }
       })
    }
@@ -170,47 +154,14 @@ class DoctorListFragment : Fragment(), View.OnClickListener {
 
    override fun onResume() {
       super.onResume()
-      checkLastStateUserClicked()
+      userClickedLastStatus()
    }
 
-   private fun checkLastStateUserClicked() {
+   private fun userClickedLastStatus() {
       if (vivyDoctorClicked){
          loadVivyDoctor()
       }else{
          loadRecentDoctor()
-      }
-   }
-
-   // Checking NetworkStatus
-   private fun checkNetworkConnectivity() {
-      val builder: AlertDialog.Builder? =
-         AlertDialog.Builder(getFragmentContext, R.style.DialogTheme)
-      builder!!.setTitle(R.string.str_tittle_network_error)
-      builder.setMessage(R.string.str_msg_error_state)
-      try {
-         builder.setNegativeButton(
-            R.string.str_retry,
-            DialogInterface.OnClickListener { dialog, _ ->
-               checkNetworkStatus()
-               dialog.dismiss()
-            })
-         val dialog: AlertDialog? = builder.setPositiveButton(
-            R.string.str_cancel,
-            DialogInterface.OnClickListener { _, _ ->
-               getFragmentContext.finish()
-            }).create()
-         dialog!!.setCanceledOnTouchOutside(false)
-         dialog.setCancelable(false)
-         dialog.setOnShowListener { dialogInterface ->
-            val positive = (dialogInterface as AlertDialog).getButton(AlertDialog.BUTTON_POSITIVE)
-            positive.setTextColor(getColor(getFragmentContext, R.color.colorDialogText))
-            val negative = dialogInterface.getButton(AlertDialog.BUTTON_NEGATIVE)
-            negative.setTextColor(getColor(getFragmentContext, R.color.colorDialogText))
-         }
-         dialog.show()
-      } catch (ex: Exception) {
-         ex.printStackTrace()
-      } finally {
       }
    }
 }

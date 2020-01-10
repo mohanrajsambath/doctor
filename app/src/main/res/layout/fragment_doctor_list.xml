@@ -9,7 +9,7 @@
 
         <variable
             name="viewModel"
-            type="com.task.doctor.viewmodel.DoctorListViewModel" />
+            type="com.task.doctor.viewmodel.DoctorViewModel" />
 
         <variable
             name="adapter"
@@ -91,8 +91,7 @@
             app:layout_constraintTop_toTopOf="@id/gL_title"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:listitem="@layout/item_doctor_details"
-            app:adapter="@{adapter}"
-            />
+            app:adapter="@{adapter}"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

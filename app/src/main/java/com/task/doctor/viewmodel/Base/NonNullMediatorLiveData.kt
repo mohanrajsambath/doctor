@@ -1,12 +1,9 @@
-package com.task.doctor.di
+package com.task.doctor.viewmodel.Base
 
-import com.task.doctor.network.DoctorDataSource
-import com.task.doctor.viewmodel.DoctorListViewModel
-import org.koin.android.viewmodel.dsl.viewModel
-import org.koin.dsl.module
+import androidx.lifecycle.MediatorLiveData
 
 /*
- * Copyright (c) 2019. Created for Coding Challenge and Created by R Sathish Kumar on 14-12-2019.
+ * Copyright (c) 2019. Created for Coding Challenge and Created by R Sathish Kumar on 16-12-2019.
  * All Rights Reserved,Company Confidential.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -23,19 +20,10 @@ import org.koin.dsl.module
  *
  * Project Name : doctor
  * Created by : R Sathish Kumar - Android Application Developer
- * Created on :14-12-2019 
- * File Name : .kt
- * ClassName : 
+ * Created on :16-12-2019 
+ * File Name : NonNullMediatorLiveData.kt
+ * ClassName : NonNullMediatorLiveData
  * Module Name : app
- * Desc : Provide the context to ViewModel level
+ * Desc : 
  */
-
-val viewModelModule = module {
-    viewModel {
-       DoctorListViewModel(get ())
-    }
-   single {
-      DoctorDataSource(get())
-   }
-}
-
+class NonNullMediatorLiveData<T>: MediatorLiveData<T> ()

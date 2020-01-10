@@ -20,10 +20,10 @@ import com.google.gson.annotations.SerializedName
  * Project Name : doctor
  * Created by : R Sathish Kumar - Android Application Developer
  * Created on :11-12-2019 
- * File Name : DoctorResponseModel.kt
+ * File Name : DoctorApiResponseModel.kt
  * ClassName : DoctorResponseModel
  * Module Name : app
- * Desc : This class is Response Model
+ * Desc : This class is Api Response Model
  */
 data class DoctorResponseModel(
     @SerializedName("doctors")

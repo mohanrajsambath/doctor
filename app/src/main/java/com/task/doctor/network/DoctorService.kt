@@ -1,9 +1,12 @@
 package com.task.doctor.network
 
-import java.lang.Exception
+import com.task.doctor.model.DoctorResponseModel
+import kotlinx.coroutines.Deferred
+import retrofit2.Response
+import retrofit2.http.*
 
 /*
- * Copyright (c) 2019. Created for Coding Challenge and Created by R Sathish Kumar on 12-12-2019.
+ * Copyright (c) 2019. Created for Coding Challenge and Created by R Sathish Kumar on 05-12-2019.
  * All Rights Reserved,Company Confidential.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -20,13 +23,21 @@ import java.lang.Exception
  *
  * Project Name : doctor
  * Created by : R Sathish Kumar - Android Application Developer
- * Created on :12-12-2019 
- * File Name : Result.kt
- * ClassName : Result
+ * Created on :05-12-2019
+ * File Name : RetrofitInterface.kt
+ * ClassName : RetrofitInterface
  * Module Name : app
- * Desc : Result handle Success and Fail response
+ * Desc : RetrofitInterface is Api Interface class
  */
-sealed  class Result<out T:Any> {
-   data class Success<out T:Any>(val data:T):Result<T>()
-   data class Error(val data:Exception):Result<Nothing>()
+
+interface DoctorService {
+
+    /**
+     * Request to doctor search list from api
+     */
+    @GET("android/doctors.json")
+   suspend fun listDoctors(): Response<DoctorResponseModel>
+
+    @GET("android/doctors-{lastkey}.json")
+    suspend fun listDoctorsLastKey(@Path("lastkey") lastKey: String): Response<DoctorResponseModel>
 }

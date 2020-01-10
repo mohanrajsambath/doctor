@@ -1,9 +1,4 @@
-package com.task.doctor.network.repository
-
-import com.task.doctor.model.DoctorResponseModel
-import kotlinx.coroutines.Deferred
-import retrofit2.Response
-import retrofit2.http.*
+package com.task.data.common
 
 /*
  * Copyright (c) 2019. Created for Coding Challenge and Created by R Sathish Kumar on 05-12-2019.
@@ -21,27 +16,16 @@ import retrofit2.http.*
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
- * Project Name : doctor
+ * Project Name : Doctor
  * Created by : R Sathish Kumar - Android Application Developer
- * Created on :05-12-2019
- * File Name : RetrofitInterface.kt
- * ClassName : RetrofitInterface
+ * Created on : 05-12-2019
+ * File Name : Connectivity.kt
+ * ClassName : Connectivity
  * Module Name : app
- * Desc : RetrofitInterface is Api Interface class
+ * Desc : 
  */
 
-interface RetrofitInterface {
+interface Connectivity {
 
-
-    /**
-     * Request to doctor search list from api
-     */
-    @GET("android/doctors.json")
-    fun listDoctors(): Deferred<Response<DoctorResponseModel>>
-
-    @GET("android/doctors-{lastkey}.json")
-    fun listDoctorsWithKey(@Path("lastkey") lastKey: String): Deferred<Response<DoctorResponseModel>>
-
-
-
+    fun isNetworkAvailable(): Boolean
 }

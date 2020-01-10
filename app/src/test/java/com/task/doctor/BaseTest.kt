@@ -1,12 +1,11 @@
-package com.task.doctor.di
+package com.task.doctor
 
-import com.task.doctor.network.RetrofitClient
-import com.task.doctor.network.repository.RetrofitInterface
-import org.koin.dsl.module
-import retrofit2.Retrofit
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import org.junit.Rule
 
 /*
- * Copyright (c) 2019. Created for Coding Challenge and Created by R Sathish Kumar on 14-12-2019.
+ * Copyright (c) 2019. Created for Coding Challenge and Created by R Sathish Kumar on 10-01-2020.
  * All Rights Reserved,Company Confidential.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -23,20 +22,18 @@ import retrofit2.Retrofit
  *
  * Project Name : doctor
  * Created by : R Sathish Kumar - Android Application Developer
- * Created on :14-12-2019 
- * File Name : AppInjector.kt
- * ClassName : AppInjector
+ * Created on :10-01-2020 
+ * File Name : BaseTest.kt
+ * ClassName : BaseTest
  * Module Name : app
- * Desc : This class is a ViewModule of Koin which provides the okHttpClient and RetrofitClient
- *
+ * Desc : 
  */
 
+open class  BaseTest {
+   @get:Rule
+   var rule = InstantTaskExecutorRule()
 
-private val retrofit: Retrofit = RetrofitClient.getClient()
-private val DOCTOR_LIST_API: RetrofitInterface = retrofit.create(RetrofitInterface::class.java)
-
-
-fun networkModule() = module {
-   single { DOCTOR_LIST_API }
+   @ExperimentalCoroutinesApi
+   @get:Rule
+   val coroutinesTestRule = CoroutineTestRule()
 }
-

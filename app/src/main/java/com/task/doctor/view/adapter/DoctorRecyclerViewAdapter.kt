@@ -8,6 +8,7 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.task.doctor.R
 import com.task.doctor.databinding.ItemDoctorDetailsBinding
+import com.task.doctor.domain.model.DoctorModel
 import com.task.doctor.model.Doctor
 import com.task.doctor.view.fragment.DoctorListFragmentDirections
 
@@ -37,7 +38,7 @@ import com.task.doctor.view.fragment.DoctorListFragmentDirections
  * recyclerView show the value in list
  */
 
-class DoctorRecyclerViewAdapter(private var items: MutableList<Doctor>) :
+class DoctorRecyclerViewAdapter(private var items: MutableList<DoctorModel>) :
    RecyclerView.Adapter<DoctorRecyclerViewAdapter.ViewHolder>() {
    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int
    ): ViewHolder {
@@ -57,9 +58,9 @@ class DoctorRecyclerViewAdapter(private var items: MutableList<Doctor>) :
 
    class ViewHolder(private val binding: ItemDoctorDetailsBinding) :
       RecyclerView.ViewHolder(binding.root) {
-      private lateinit var item: Doctor
+      private lateinit var item: DoctorModel
 
-      internal fun bind(item: Doctor) {
+      internal fun bind(item: DoctorModel) {
          this.item = item
          binding.itemDetails = item
          binding.setClickListener {

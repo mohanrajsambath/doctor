@@ -27,7 +27,7 @@ import retrofit2.http.*
  * File Name : RetrofitInterface.kt
  * ClassName : RetrofitInterface
  * Module Name : app
- * Desc : RetrofitInterface is Api Interface class
+ * Desc : DoctorService is Api Interface class
  */
 
 interface DoctorService {

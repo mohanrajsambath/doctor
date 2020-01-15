@@ -2,14 +2,17 @@ package com.task.doctor
 
 import com.task.data.common.Connectivity
 import com.task.doctor.data.DoctorRepositoryImpl
+import com.task.doctor.domain.model.Result
 import com.task.doctor.model.DoctorResponseModel
 import com.task.doctor.network.DoctorService
 import kotlinx.coroutines.runBlocking
+import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 import org.mockito.InjectMocks
 import org.mockito.Mock
 import org.mockito.Mockito
+import org.mockito.Mockito.`when`
 import org.mockito.MockitoAnnotations
 import retrofit2.Response
 
@@ -48,51 +51,47 @@ class DoctorRepositoryImplTest:BaseTest() {
 
  @InjectMocks
  private lateinit var repo: DoctorRepositoryImpl
- private lateinit var spyRepo: DoctorRepositoryImpl
- private val lastkey = "CvQD7gEAAKjcb"
 
    @Before
    fun init(){
       MockitoAnnotations.initMocks(this)
       repo = DoctorRepositoryImpl(doctorService,connectivity)
-      spyRepo = Mockito.spy(repo)
    }
 
    @Test
-   fun testPass() {
+   fun getDoctorListFromNetworkTest_Success() {
       val result = Response.success<DoctorResponseModel>(DoctorResponseModel())
       result.code()
 
       runBlocking {
-         Mockito.`when`(connectivity.isNetworkAvailable()).thenReturn(true)
-         Mockito.`when`(doctorService.listDoctors()).thenReturn(result)
-         spyRepo.getDoctorListFromNetwork()
+         `when`(connectivity.isNetworkAvailable()).thenReturn(true)
+         `when`(doctorService.listDoctors()).thenReturn(result)
+         val response = doctorService.listDoctors()
+         Assert.assertEquals(result,response)
       }
    }
 
    @Test
-   fun testFail() {
-      val result = Response.success<DoctorResponseModel>(DoctorResponseModel())
-      result.code()
+   fun getDoctorListFromNetworkTest_Failure() {
+      val result = Result.Error("No Internet Connection")
 
       runBlocking {
-         Mockito.`when`(!connectivity.isNetworkAvailable()).thenReturn(false)
-         Mockito.`when`(doctorService.listDoctors()).thenReturn(result)
-         spyRepo.getDoctorListFromNetwork()
+         `when`(!connectivity.isNetworkAvailable()).thenReturn(false)
+         val response = Result.Error("No Internet Connection")
+         Assert.assertEquals(result,response)
       }
    }
 
    @Test
-   fun testWithKey() {
-       val lastkey = "CvQD7gEAAKjcb"
+   fun getDoctorListWithKeyTest_Success() {runBlocking {
+         val lastkey = "CvQD7gEAAKjcb"
 
-      val result = Response.success<DoctorResponseModel>(DoctorResponseModel())
-      result.code()
-
-      runBlocking {
-         Mockito.`when`(connectivity.isNetworkAvailable()).thenReturn(true)
-         Mockito.`when`(doctorService.listDoctorsLastKey(lastkey)).thenReturn(result)
-         spyRepo.getDoctorListFromNetwork()
+         val result = Response.success<DoctorResponseModel>(DoctorResponseModel())
+         result.code()
+         `when`(connectivity.isNetworkAvailable()).thenReturn(true)
+         `when`(doctorService.listDoctorsLastKey(lastkey)).thenReturn(result)
+         val response = doctorService.listDoctorsLastKey(lastkey)
+         Assert.assertEquals(result,response)
       }
    }
 }
